@@ -81,6 +81,8 @@ curl -s -v -L $APP.on-aca.klaud.online/
 ####
 
 # clean up
+az containerapp delete --name $APP_NAME --resource-group $RESOURCE_GROUP --yes
+az containerapp env delete --name $ENVIRONMENT_NAME --resource-group $RESOURCE_GROUP --yes
 az group delete --name $RESOURCE_GROUP --yes
 ```
 
