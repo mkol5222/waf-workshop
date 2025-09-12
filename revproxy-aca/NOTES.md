@@ -21,10 +21,14 @@ az containerapp env create --name $ENVIRONMENT_NAME --resource-group $RESOURCE_G
 
 az containerapp create --name $INTERNAL_APP --resource-group $RESOURCE_GROUP --environment $ENVIRONMENT_NAME --image nginx:latest --ingress internal --target-port 80 --query properties.configuration.ingress.fqdn
 
-# do not force HTTPS
-az containerapp ingress update -n $INTERNAL_APP -g $RESOURCE_GROUP  --target-port 80 --transport http --ingress external --allow-insecure
+az containerapp ingress show -n $INTERNAL_APP -g $RESOURCE_GROUP
 
-az containerapp ingress disable -n $INTERNAL_APP -g $RESOURCE_GROUP  
+# do not force HTTPS
+az containerapp ingress update -n $INTERNAL_APP -g $RESOURCE_GROUP  --target-port 80 --transport http --ingress internal --allow-insecure
+
+# az containerapp ingress disable -n $INTERNAL_APP -g $RESOURCE_GROUP  
+az containerapp ingress create -n $INTERNAL_APP -g $RESOURCE_GROUP  --target-port 80 --transport http --ingress internal --allow-insecure
+
 
 # get FQDN
 az containerapp show --name $INTERNAL_APP --resource-group $RESOURCE_GROUP --query properties.configuration.ingress.fqdn -o tsv
@@ -118,7 +122,9 @@ curl -s -v -L $APP.on-aca.klaud.online/
 ####
 
 # clean up
-az containerapp delete --name $APP_NAME --resource-group $RESOURCE_GROUP --yes
+az containerapp list -g $RESOURCE_GROUP -o table
+az containerapp delete --name $INTERNAL_APP --resource-group $RESOURCE_GROUP --yes
+az containerapp delete --name $PUBLIC_APP --resource-group $RESOURCE_GROUP --yes
 az containerapp env delete --name $ENVIRONMENT_NAME --resource-group $RESOURCE_GROUP --yes
 az group delete --name $RESOURCE_GROUP --yes
 ```
