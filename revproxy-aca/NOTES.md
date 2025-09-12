@@ -21,6 +21,9 @@ az containerapp env create --name $ENVIRONMENT_NAME --resource-group $RESOURCE_G
 
 az containerapp create --name $INTERNAL_APP --resource-group $RESOURCE_GROUP --environment $ENVIRONMENT_NAME --image nginx:latest --ingress internal --target-port 80 --query properties.configuration.ingress.fqdn
 
+# do not force HTTPS
+az containerapp ingress update -n $INTERNAL_APP -g $RESOURCE_GROUP  --target-port 80 --transport http --allow-insecure
+
 # get FQDN
 az containerapp show --name $INTERNAL_APP --resource-group $RESOURCE_GROUP --query properties.configuration.ingress.fqdn -o tsv
 
