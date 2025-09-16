@@ -17,11 +17,7 @@ output "waf-ip" {
   value = azurerm_public_ip.waf.ip_address
 }
 
-# cross check
-output "admin_password" {
-  value     = local.admin_password
-  sensitive = true
-}
+
 output "waf_token" {
   value     = var.waf_token
   sensitive = true
