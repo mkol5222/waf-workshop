@@ -65,6 +65,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "waf" {
     templatefile("${path.module}/custom-data.sh", {
       token = var.waf_token,
       vnet  = local.vnet_address,
-      location = local.location
+      location = local.location,
+      bootstrap_script = base64encode(file("${path.module}/bootstrap.sh"))
   }))
 }
