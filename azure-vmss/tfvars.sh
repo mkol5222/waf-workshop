@@ -31,8 +31,8 @@ if [[ ! -f $WAFTOKEN_FILE ]]; then
   echo "$token" > $WAFTOKEN_FILE
 fi
 
-export TF_VAR_admin_password=$(cat $ADMINPASS_FILE)
-export TF_VAR_waf_token=$(cat $WAFTOKEN_FILE)
+export TF_VAR_admin_password=$(head -n1 $ADMINPASS_FILE | tr -d '\n')
+export TF_VAR_waf_token=$(head -n1 $WAFTOKEN_FILE | tr -d '\n')
 
 export TF_VAR_envId=$(jq -r .envId $SPFILE)
 export TF_VAR_subscriptionId=$(jq -r .subscriptionId $SPFILE)
