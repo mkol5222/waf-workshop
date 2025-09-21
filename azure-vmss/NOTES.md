@@ -31,7 +31,7 @@ echo $PUBPIPS
 
 # cert in KV
 
-APPSECAPP=demo.local
+APPSECAPP=demoaz.local
 
 openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -addext "subjectAltName = DNS:${APPSECAPP}" -subj "/C=US/CN=${APPSECAPP}" -out app.pem
 
@@ -46,9 +46,19 @@ ls
 KVNAME=$(cd /workspaces/waf-workshop/azure-vmss/keyvault/; terraform output -raw keyvault_name)
 echo $KVNAME
 
-az keyvault certificate import --vault-name $KVNAME -n demo-cert --file app.pfx --password ""
+az keyvault certificate import --vault-name $KVNAME -n demoaz-cert --file app.pfx --password ""
 az keyvault certificate list --vault-name $KVNAME -o table
-az keyvault certificate show --vault-name $KVNAME -n demo-cert -o table
+az keyvault certificate show --vault-name $KVNAME -n demoaz-cert -o table
 
+make waf-ssh
+cpnano -lc reverse-proxy-manager
+grep -i cert /var/log/nano_agent/cp-nano-reverse-proxy-manager.dbg 
+exit
+# second instance
+make waf-ssh1
+cpnano -lc reverse-proxy-manager
+grep -i cert /var/log/nano_agent/cp-nano-reverse-proxy-manager.dbg 
+grep -i cert /var/log/nano_agent/cp-nano-reverse-proxy-manager.dbg | grep -i map
+exit
 
 ```
