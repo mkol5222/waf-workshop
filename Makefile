@@ -9,3 +9,6 @@ vmss-down:
 vmss-ssh:
 	(cd azure-vmss && ./ssh.sh)
 vmss: vmss-up
+
+sp-loginx:
+	npx @dotenvx/dotenvx run -- ./scripts/sp-loginx.sh

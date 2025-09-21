@@ -2,41 +2,47 @@
 
 set -euo pipefail
 
-SPFILE=../secrets/sp.json
-ADMINPASS_FILE=../secrets/adminpass.txt
-WAFTOKEN_FILE=../secrets/waf_token.txt
 
-# does secrets/sp.json and secrets/reader.json exist?
-if [[ ! -f $SPFILE ]]; then
-  echo "$SPFILE does not exist"
-  exit 1
-fi
+# fetch from root folder
+export TF_VAR_envId=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_envId2)
+export TF_VAR_envId2=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_envId2)  
+export TF_VAR_subscriptionId=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_subscriptionId)
+export TF_VAR_appId=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_appId)
+export TF_VAR_password=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_password)
+export TF_VAR_tenant=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_tenant)
+export TF_VAR_displayName=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_displayName)
 
-# does secrets/adminpass.txt exist?
-if [[ ! -f $ADMINPASS_FILE ]]; then
-  echo "$ADMINPASS_FILE does not exist"
+# required variables
+for rv in TF_VAR_subscriptionId TF_VAR_tenant TF_VAR_appId TF_VAR_password TF_VAR_envId TF_VAR_displayName; do
+  if [[ -z "${!rv:-}" ]]; then
+    echo "$rv is not set"
+    exit 1
+  fi
+done
+
+
+# check of TF_VAR_admin_password exists in dotenvx file ../.env
+if [[ -z "$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_admin_password)" ]]; then
+  echo "TF_VAR_admin_password is not set in ../.env"
   echo "Using default admin password: 'Welcome@Home#1984'"
-  touch $ADMINPASS_FILE
-  echo -n "Welcome@Home#1984" > $ADMINPASS_FILE
+  npx @dotenvx/dotenvx set -f ../.env -fk ../.env.keys TF_VAR_admin_password "Welcome@Home#1984"
   echo "Press any key to continue..."
   read -n 1 -s
 fi
 
-# does secrets/waf_token.txt exist?
-if [[ ! -f $WAFTOKEN_FILE ]]; then
-  echo "$WAFTOKEN_FILE does not exist"
-  touch $WAFTOKEN_FILE
+# check of TF_VAR_waf_token exists in dotenvx file ../.env
+if [[ -z "$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_waf_token)" ]]; then
   echo -n "Please enter your WAF Azure Gateway profile token (get it from https://portal.checkpoint.com/): "
   read -r token
-  echo "$token" > $WAFTOKEN_FILE
+  # echo "$token" > $WAFTOKEN_FILE
+  npx @dotenvx/dotenvx set -f ../.env -fk ../.env.keys TF_VAR_waf_token "$token"
 fi
 
-export TF_VAR_admin_password=$(head -n1 $ADMINPASS_FILE | tr -d '\n')
-export TF_VAR_waf_token=$(head -n1 $WAFTOKEN_FILE | tr -d '\n')
+export TF_VAR_admin_password=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_admin_password)
+export TF_VAR_waf_token=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_waf_token)
 
-export TF_VAR_envId=$(jq -r .envId $SPFILE)
-export TF_VAR_subscriptionId=$(jq -r .subscriptionId $SPFILE)
-export TF_VAR_appId=$(jq -r .appId $SPFILE)
-export TF_VAR_password=$(jq -r .password $SPFILE)
-export TF_VAR_tenant=$(jq -r .tenant $SPFILE)
+# echo "TF_VAR_admin_password: >$TF_VAR_admin_password<"
+# echo "TF_VAR_waf_token: >$TF_VAR_waf_token<"
+
+
 
