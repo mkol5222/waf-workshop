@@ -57,7 +57,19 @@ with `Create New Asset` button.
 ![alt text](image-9.png) 
 
 12. Wait until tool confirms that DNS records were created. You should see two CNAME records - one to validate domain and one to point front-end URL to WAF SaaS service.
+![alt text](image-12.png)
+
+
 - check WAF SaaS profile page to see the actual state under your new front-end URL.
 
 ![alt text](image-10.png)
 
+13. Test your front-end URL in browser - you should see the similar content as when you access `http://ip.iol.cz` directly. E.g. you have created https://ip.iol.cz.yourname.odl-user-sp-1851253.on-waf.cloudguard.rocks handled by WAF SaaS service that is proxying requests to http://ip.iol.cz origin server.
+
+14. Cause incident by adding `?a=<script>alert(1)</script>` or `?q=cat+/etc/passwd` to the URL - you should see WAF blocking page. Full URL e.g. https://ip.iol.cz.yourname.odl-user-sp-1851253.on-waf.cloudguard.rocks/?q=cat+/etc/passwd
+
+![alt text](image-13.png)
+
+15. Use WAF SaaS profile `Monitoring` section to see the blocked requests and other statistics. You can reference incident based on Incident ID shown on blocking page.
+  - you can even right click log for Event Advisor incudent explanation
+  ![alt text](image-14.png)
