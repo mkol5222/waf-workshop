@@ -27,4 +27,28 @@ echo $PUBPIPS
 
 ```bash
 /bin/bash -c '( echo "[$(date)] Starting bootstrap"; clish -c "lock database override"; clish -c "set ntp server primary pool.ntp.org version 3"; clish -c "set ntp active on"; clish -c "save config"; echo "[$(date)] Finished bootstrap" ) >> /var/log/bootstrap.log 2>&1 &'
+
+
+# cert in KV
+
+APPSECAPP=demo.local
+
+openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -addext "subjectAltName = DNS:${APPSECAPP}" -subj "/C=US/CN=${APPSECAPP}" -out app.pem
+
+openssl x509 -text -noout -in app.pem | egrep 'DNS|CN'
+
+# bundle to PFX
+openssl pkcs12 -inkey app.key -in app.pem -export -out app.pfx -passout pass:""
+ls
+
+# use Azure CLI to upload to KV
+
+KVNAME=$(cd /workspaces/waf-workshop/azure-vmss/keyvault/; terraform output -raw keyvault_name)
+echo $KVNAME
+
+az keyvault certificate import --vault-name $KVNAME -n demo-cert --file app.pfx --password ""
+az keyvault certificate list --vault-name $KVNAME -o table
+az keyvault certificate show --vault-name $KVNAME -n demo-cert -o table
+
+
 ```

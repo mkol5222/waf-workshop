@@ -18,3 +18,8 @@ kv: kv-up
 
 sp-loginx:
 	npx @dotenvx/dotenvx run -- ./scripts/sp-loginx.sh
+
+waf-ssh:
+	(cd azure-vmss && ./ssh.sh)
+waf-ssh1:
+	(cd azure-vmss && ./ssh.sh 1)
