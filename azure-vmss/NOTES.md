@@ -53,12 +53,19 @@ az keyvault certificate show --vault-name $KVNAME -n demoaz-cert -o table
 make waf-ssh
 cpnano -lc reverse-proxy-manager
 grep -i cert /var/log/nano_agent/cp-nano-reverse-proxy-manager.dbg 
+grep -i cert /var/log/nano_agent/cp-nano-reverse-proxy-manager.dbg | grep -i map
+docker exec -it cp_nginx_gaia nginx -T | grep server_name -A 3
+
+curl -k https://demoaz.local/ip/ --resolve demoaz.local:443:127.0.0.1
+curl -k 'https://demoaz.local/ip/?q=cat+/etc/passwd' --resolve demoaz.local:443:127.0.0.1
+
 exit
 # second instance
 make waf-ssh1
 cpnano -lc reverse-proxy-manager
 grep -i cert /var/log/nano_agent/cp-nano-reverse-proxy-manager.dbg 
 grep -i cert /var/log/nano_agent/cp-nano-reverse-proxy-manager.dbg | grep -i map
+docker exec -it cp_nginx_gaia nginx -T | grep server_name -A 3
 exit
 
 ```
