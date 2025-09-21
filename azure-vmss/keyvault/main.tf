@@ -11,7 +11,7 @@ provider "azurerm" {
 # Resource Group
 # ----------------------------
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-vmss-waf-kv=${var.envId}"
+  name     = "rg-vmss-waf-kv-${var.envId2}"
   location = "westeurope"
 }
 

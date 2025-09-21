@@ -12,7 +12,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "waf" {
   }
 
   tags = {
-    // vault = var.vault
+    vault = "kvwafvmssdemo6b4d6f7e" // TODO not hardcoded!
   }
 
   admin_username = "cpadmin"

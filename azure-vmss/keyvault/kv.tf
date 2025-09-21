@@ -1,5 +1,5 @@
 resource "azurerm_key_vault" "kv" {
-  name                        = "kv-waf-vmss-demo-${var.envId}"
+  name                        = "kvwafvmssdemo${var.envId2}"
   location                    = azurerm_resource_group.rg.location
   resource_group_name         = azurerm_resource_group.rg.name
   sku_name                    = "standard"
@@ -7,3 +7,9 @@ resource "azurerm_key_vault" "kv" {
   purge_protection_enabled    = true
   soft_delete_retention_days  = 7
 }
+
+output "keyvault_name" {
+  value =  "kvwafvmssdemo${var.envId2}"
+}
+
+# output "keyvault_uri" {

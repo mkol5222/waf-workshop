@@ -10,5 +10,11 @@ vmss-ssh:
 	(cd azure-vmss && ./ssh.sh)
 vmss: vmss-up
 
+kv-up:
+	(cd azure-vmss/keyvault && ./up.sh)
+kv-down:
+	(cd azure-vmss/keyvault && ./down.sh)
+kv: kv-up
+
 sp-loginx:
 	npx @dotenvx/dotenvx run -- ./scripts/sp-loginx.sh
