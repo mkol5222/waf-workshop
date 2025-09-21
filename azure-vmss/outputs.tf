@@ -22,3 +22,7 @@ output "waf_token" {
   value     = var.waf_token
   sensitive = true
 }
+
+output "vmss_principal_id" {
+  value = azurerm_linux_virtual_machine_scale_set.waf.identity[0].principal_id
+}
