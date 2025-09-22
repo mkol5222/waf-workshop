@@ -42,7 +42,10 @@
 7. [IN CODESPACE] Start VMSS WAF deployment:
 
     ```bash
-    make vmss-waf
+    # optionally set the token with dotenvx or wait to be asked during 'make vmss'
+    npx @dotenvx/dotenvx set TF_VAR_waf_token cp-7b...
+    # script to terraform init && terraform apply
+    make vmss
     ```
 
 8. [INFINITY PORTAL] in [Assets](https://portal.checkpoint.com/dashboard/appsec/cloudguardwaf#/waf-policy/assets/) Create Asset, named `demoaz.local`, front-end URL `http://demoaz.local`, backend server `http://ip.iol.cz`.
@@ -77,4 +80,37 @@
 
 ### Optional - HTTPS and certificates in Azure Key Vault
 
+10. [IN CODESPACE] Lets start by creation of self-signed certificate:
 
+    ```bash
+    # domain used
+    APPSECAPP=demoaz.local
+
+    # create self-signed cert to app.pem and app.key
+    openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -addext "subjectAltName = DNS:${APPSECAPP}" -subj "/C=US/CN=${APPSECAPP}" -out app.pem
+
+    # inspect cert
+    openssl x509 -text -noout -in app.pem | egrep 'DNS|CN'
+
+    # bundle to PFX
+    openssl pkcs12 -inkey app.key -in app.pem -export -out app.pfx -passout pass:""
+    
+    ls app*
+    ```
+
+11. [IN CODESPACE] Certificates should go to Azure Key Vault. We need to create one first:
+
+    ```bash
+    # VMSS princimal id for KV policy
+    export TF_VAR_vmss_principal_id=$(cd azure-vmss && terraform output -raw vmss_principal_id)
+    echo "VMSS Principal ID: $TF_VAR_vmss_principal_id"
+
+    # now create KV
+    (cd azure-vmss/keyvault && ./up.sh)
+    ```
+
+ 12. [IN CODESPACE] Lets add our self-signed certificate to Key Vault:
+
+    ```bash
+    
+    ```  
