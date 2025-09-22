@@ -59,9 +59,9 @@
 9. [IN CODESPACE] Wait for VMSS instances deployment to finish and then SSH to them using:
 
     ```bash
-    make ssh-vmss
+    make waf-ssh
     # seconde VM instance
-    make ssh-vmss1
+    make waf-ssh1
     ```
 
     - deployed agents on VMSS are listed under [Agents](https://portal.checkpoint.com/dashboard/appsec/cloudguardwaf#/waf-policy/agents/)
