@@ -142,6 +142,17 @@
     echo $KVNAME
     ```
 
-    Does it match the Key Vault we have created?
+    Does it match the Key Vault we have created? If not, fix and revisit step 14.
 
 ![alt text](image-17.png)
+
+### Cleanup
+
+```
+# in codespace
+(cd /workspaces/waf-workshop/azure-vmss/keyvault && ./down.sh)
+# and VMSS too
+make vmss-down
+# SP delete - optional
+
+```
