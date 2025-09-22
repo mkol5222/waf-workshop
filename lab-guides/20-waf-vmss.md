@@ -137,4 +137,11 @@
     ```
 
 15. [AZURE PORTAL] Have a look at WAF VMSS and tag `vault`.
+    ```bash
+    KVNAME=$(cd /workspaces/waf-workshop/azure-vmss/keyvault/; terraform output -raw keyvault_name)
+    echo $KVNAME
+    ```
 
+    Does it match the Key Vault we have created?
+
+![alt text](image-17.png)
