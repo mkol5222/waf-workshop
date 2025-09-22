@@ -112,5 +112,29 @@
  12. [IN CODESPACE] Lets add our self-signed certificate to Key Vault:
 
     ```bash
-    
+    KVNAME=$(cd /workspaces/waf-workshop/azure-vmss/keyvault/; terraform output -raw keyvault_name)
+    echo $KVNAME
+
+    # upload
+    az keyvault certificate import --vault-name $KVNAME -n demoaz-cert --file app.pfx --password ""
+    # check
+    az keyvault certificate list --vault-name $KVNAME -o table
+    az keyvault certificate show --vault-name $KVNAME -n demoaz-cert -o table
     ```  
+
+13. [INFINIY PORTAL] Add new asset `demoaz.local`  front-end URL `https://demoaz.local` and publish&enforce.
+
+14. [IN CODESPACE] In WAF VM SSH session, test WAF functionality with HTTPS:
+
+    ```bash
+    make waf-ssh
+    cpnano -lc reverse-proxy-manager
+    grep -i cert /var/log/nano_agent/cp-nano-reverse-proxy-manager.dbg 
+    grep -i cert /var/log/nano_agent/cp-nano-reverse-proxy-manager.dbg | grep -i map
+    docker exec -it cp_nginx_gaia nginx -T | grep server_name -A 3
+
+    curl -k https://demoaz.local/ip/ --resolve demoaz.local:443:127.0.0.1
+    ```
+
+15. [AZURE PORTAL] Have a look at WAF VMSS and tag `vault`.
+

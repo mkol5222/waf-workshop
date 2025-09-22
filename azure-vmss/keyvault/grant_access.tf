@@ -13,5 +13,5 @@ resource "azurerm_key_vault_access_policy" "vmss_kv_policy_sp" {
   object_id    = data.azuread_service_principal.mysp.object_id
  // azurerm_linux_virtual_machine_scale_set.vmss.identity[0].principal_id
   secret_permissions = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
+  certificate_permissions = ["Get", "List", "Import"]
 }
