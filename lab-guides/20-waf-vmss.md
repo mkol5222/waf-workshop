@@ -19,15 +19,15 @@
     ```bash
     touch .env
 
-    npx @dotenvx/dotenvx set TF_VAR_envId "de1ecd2c"
-    npx @dotenvx/dotenvx set TF_VAR_envId2 "de1ecd2c"
-    npx @dotenvx/dotenvx set TF_VAR_subscriptionId "real-subscription-id"
-    npx @dotenvx/dotenvx set TF_VAR_tenant "real-tenant-id"
-    npx @dotenvx/dotenvx set TF_VAR_appId "real-app-id"
-    npx @dotenvx/dotenvx set TF_VAR_password "some-real-secret-value"
-    npx @dotenvx/dotenvx set TF_VAR_displayName "sp-automagic-de1ecd2c"
+    dotenvx set TF_VAR_envId "de1ecd2c"
+    dotenvx set TF_VAR_envId2 "de1ecd2c"
+    dotenvx set TF_VAR_subscriptionId "real-subscription-id"
+    dotenvx set TF_VAR_tenant "real-tenant-id"
+    dotenvx set TF_VAR_appId "real-app-id"
+    dotenvx set TF_VAR_password "some-real-secret-value"
+    dotenvx set TF_VAR_displayName "sp-automagic-de1ecd2c"
 
-    npx @dotenvx/dotenvx run -- env | grep TF_VAR_
+    dotenvx run -- env | grep TF_VAR_
     ```
 
 5. [IN CODESPACE] Login Azure SP in Codespace terminal:
@@ -43,7 +43,7 @@
 
     ```bash
     # optionally set the token with dotenvx or wait to be asked during 'make vmss'
-    npx @dotenvx/dotenvx set TF_VAR_waf_token cp-7b...
+    dotenvx set TF_VAR_waf_token cp-7b...
     # script to terraform init && terraform apply
     make vmss
     ```

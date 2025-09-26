@@ -9,9 +9,9 @@ source ./tfvars.sh
 
 # waf-tf-vmss-6b4d6f7e 
 # rg WAF-WORKSHOP-VMSS-6B4D6F7E-RG
-ENVID=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_envId2)
+ENVID=$(dotenvx get -f ../.env -fk ../.env.keys TF_VAR_envId2)
 
-echo  ENV1 $(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_envId2)
+echo  ENV1 $(dotenvx get -f ../.env -fk ../.env.keys TF_VAR_envId2)
 
 echo ENV2 $ENVID
 RG="WAF-WORKSHOP-VMSS-$ENVID-RG"
@@ -34,7 +34,7 @@ if [ -z "$PUBLICIP" ]; then
 fi
 echo "Public IP: $PUBLICIP"
 
-SSHPASS=$(npx @dotenvx/dotenvx get -f ../.env -fk ../.env.keys TF_VAR_admin_password)
+SSHPASS=$(dotenvx get -f ../.env -fk ../.env.keys TF_VAR_admin_password)
 
 echo "SSHing into VMSS instance at $PUBLICIP with password $SSHPASS"
 sshpass -p "$SSHPASS" ssh -o StrictHostKeyChecking=no admin@$PUBLICIP

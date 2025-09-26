@@ -6,7 +6,7 @@
 az vmss list -o table
 # waf-tf-vmss-6b4d6f7e 
 # rg WAF-WORKSHOP-VMSS-6B4D6F7E-RG
-ENVID=$(npx @dotenvx/dotenvx get TF_VAR_envId2)
+ENVID=$(dotenvx get TF_VAR_envId2)
 echo $ENVID
 RG=$"WAF-WORKSHOP-VMSS-$ENVID-RG"
 echo $RG
