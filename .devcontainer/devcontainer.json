@@ -27,7 +27,7 @@
 			]
 		}
 	},
-	"postCreateCommand": "sudo apt-get update && sudo apt-get install -y sshpass age; curl -L -o /tmp/sops.deb https://github.com/getsops/sops/releases/download/v3.10.2/sops_3.10.2_amd64.deb; sudo apt install -y /tmp/sops.deb"
+	"postCreateCommand": "(curl -sfS https://dotenvx.sh | sudo sh); sudo apt-get update && sudo apt-get install -y sshpass age; curl -L -o /tmp/sops.deb https://github.com/getsops/sops/releases/download/v3.10.2/sops_3.10.2_amd64.deb; sudo apt install -y /tmp/sops.deb"
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
