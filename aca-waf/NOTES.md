@@ -47,5 +47,7 @@ az containerapp logs show --name $APP_NAME --resource-group $RESOURCE_GROUP
 
 # cleanup later?
 az containerapp delete --name $APP_NAME --resource-group $RESOURCE_GROUP --yes
+az containerapp env delete --name $ENVIRONMENT_NAME --resource-group $RESOURCE_GROUP --yes
+az group delete --name $RESOURCE_GROUP --yes --no-wait
 
 
